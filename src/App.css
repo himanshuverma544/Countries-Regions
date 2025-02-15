@@ -1,0 +1,14 @@
+.nav-item a.current-active-link {
+  position: relative;
+  color: #000 !important;
+
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: calc(100% + 15px);
+    height: 1.2px;
+    background-color: #000;
+  }
+}

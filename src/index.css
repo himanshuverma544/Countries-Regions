@@ -1,0 +1,43 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100dvh
+}
+
+ul {
+  list-style: none;
+  padding: 0!important;
+  margin: 0 !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+
+.gutters {
+  padding: 2rem 5rem;
+}
+
+.gutters-x {
+  padding: 0 5rem;
+}
+
+.fs-7 {
+  font-size: 0.875rem;
+}
+
+.fs-8 {
+  font-size: 0.75rem
+}
