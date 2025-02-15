@@ -1,16 +1,12 @@
 export default function Heading({ className = "", text = "Welcome" }) {
 
   return (
-    <div className={`row ${className}`}>
-      <div className="left-line-cont col-12 col-md-5 d-flex align-items-start">
-        <hr style={{ width: "95%", height: "2px", backgroundColor: "#000" }}/>
+    <div className={`d-flex flex-column align-items-center justify-items-center flex-sm-row ${className}`}>
+      <hr className="divider-1 w-100 border-2 border-black mb-sm-5"></hr>
+      <div className="fs-1 fw-semibold px-4">
+        {text}
       </div>
-      <h1 className="col-12 col-md-2 heading text-center text-uppercase">
-        {`${text}`}
-      </h1>
-      <div className="right-line-cont col-12 col-md-5 d-flex justify-content-end align-items-end">
-        <hr style={{ width: "95%", height: "2px", backgroundColor: "#000" }}/>
-      </div>
+      <hr className="divider-2 w-100 border-2 border-black mt-sm-5"></hr>
     </div>
   );
 }

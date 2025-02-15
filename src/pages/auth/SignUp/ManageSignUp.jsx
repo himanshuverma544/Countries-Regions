@@ -9,22 +9,31 @@ import { SignUp } from "../../../routes";
 import ConceptImage from "../../../assets/concept-image.png";
 
 
-export default function ManageSignIn() {
+export default function ManageSignUp() {
 
   return (
-    <div className="manage-sign-in w-100 d-flex">
+    <div className="manage-sign-up w-100 d-flex">
       <div className="left-wrapper w-50 d-flex justify-content-center align-items-center">
         <Form className="sign-in-form">
           <Form.Group className="form-head d-flex flex-column mb-3" controlId="formBasicEmail">
             <Form.Text className="fs-2 fw-semibold">
-              Sign In
+              Sign Up
             </Form.Text>
             <Form.Text className="fw-semibold">
-              New user? <Link to={SignUp.pathname}>Create an account</Link>
+              Already User? <Link to={SignUp.pathname}>Sign In here</Link>
             </Form.Text>
           </Form.Group>
 
           <Form.Group className="form-body">
+
+
+            <InputGroup className="mb-3" controlId="formBasicEmail">
+              <Form.Control
+                type="text"
+                placeholder="Full Name"
+              />
+            </InputGroup>
+
             <InputGroup className="mb-3" controlId="formBasicEmail">
               <Form.Control
                 type="text"
@@ -39,12 +48,19 @@ export default function ManageSignIn() {
               />
             </InputGroup>
 
+            <InputGroup className="mb-3">
+              <Form.Control
+                type="password"
+                placeholder="Confirm Your Password"
+              />
+            </InputGroup>
+
             <InputGroup className="mb-3" controlId="formBasicCheckbox">
               <Form.Check type="checkbox" label="Keep me signed in"/>
             </InputGroup>
 
             <Button className="w-100 rounded-0 py-2" variant="dark" type="submit">
-              Sign In
+              Sign Up
             </Button>
           </Form.Group>
 
@@ -61,9 +77,9 @@ export default function ManageSignIn() {
       </div>
 
       <div className="right-wrapper w-50 d-flex justify-content-center align-items-center">
-        <div className="img-cont">
-          <img className="w-100 h-100" src={ConceptImage} alt="concept-image"/>
-        </div>
+          <div className="img-cont">
+            <img className="w-100 h-100" src={ConceptImage} alt="concept-image"/>
+          </div>
       </div>
     </div>
   );

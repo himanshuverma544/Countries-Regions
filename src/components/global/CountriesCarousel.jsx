@@ -46,8 +46,8 @@ export default function CountriesCarousel({ className = "", items = [], loading 
                   alt={item?.name || ""}
                 />
               </div>
-              <Carousel.Caption className="bg-black bg-opacity-50 mb-5">
-                <div className="country-name fs-2">
+              <Carousel.Caption className="bg-black bg-opacity-50 px-2 mb-5">
+                <div className="country-name text-center fs-2">
                   {item?.name || ""}
                 </div>
                 <div className="country-region fs-6">
