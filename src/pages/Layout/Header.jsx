@@ -23,8 +23,6 @@ export default function Header() {
   const dispatch = useDispatch();
   const signedInUser = useSelector(state => state.auth.signedInUser);
 
-  console.log(signedInUser);
-
   return (
     <header className="d-flex flex-wrap justify-content-between gutters">
       <Link
