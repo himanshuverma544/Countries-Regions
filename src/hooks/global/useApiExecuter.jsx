@@ -1,27 +1,33 @@
+import { useEffect, useCallback } from "react";
+
 import { useDispatch } from "react-redux";
 import { fetchData, getItemsByRegion } from "../../redux/dataSlice";
 
-import { useEffect } from 'react';
-import useDebounceEffect from "../utilities/useDebounceEffect";
-
 import useGetRegionName from "./useGetRegionName";
+import useReadyEffect from "../utilities/useReadyEffect";
 
 
-function useApiExecuter() {
-  
+const useApiExecuter = () => {
+
   const dispatch = useDispatch();
   const regionName = useGetRegionName();
 
-  useEffect(() => {
-    dispatch(fetchData());
-  }, []);
 
-  useDebounceEffect(() => {
-    
+  const fetchDataCallback = useCallback(async () => {
+    await dispatch(fetchData());
+  }, [dispatch]);
+
+  const isFetchedData = useReadyEffect(fetchDataCallback, []);
+
+
+  useEffect(() => {
+
+    if (!isFetchedData) return;
+
     if (regionName) {
       dispatch(getItemsByRegion(regionName));
     }
-  }, [regionName], 1000);
+  }, [isFetchedData, regionName, dispatch]);
 }
 
 

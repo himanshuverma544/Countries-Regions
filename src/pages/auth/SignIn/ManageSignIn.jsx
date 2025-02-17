@@ -1,46 +1,115 @@
+import { useNavigate } from "react-router-dom";
+
+import { useState } from "react";
+
 import { Link } from "react-router-dom";
+
+import { store } from "../../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { validateUsernameOrEmail, validatePassword, validateKeepMeSignedIn, signInUser } from "../../../redux/authSlice";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
+import { Toast, ToastContainer } from "react-bootstrap";
 
 import Divider from "../../../components/utilities/Divider";
-import { SignUp } from "../../../routes";
+
 import ConceptImage from "../../../assets/concept-image.png";
+
+import { Home, SignUp } from "../../../routes";
 
 
 export default function ManageSignIn() {
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+
+  const {
+    usernameOrEmail,
+    password,
+    signInError,
+    keepMeSignedIn
+  }
+    = useSelector(state => state.auth);
+
+
+  const handleSignIn = event => {
+
+    event.preventDefault();
+
+    dispatch(
+      signInUser({
+        usernameOrEmail,
+        password,
+        keepMeSignedIn
+      })
+    );
+
+    
+
+    if (signInError) {
+      console.log(signInError);
+    }
+    else {
+      console.log("Success");
+    }
+
+
+   
+  }
+    
+
   return (
-    <div className="manage-sign-in w-100 d-flex">
-      <div className="left-wrapper w-50 d-flex justify-content-center align-items-center">
-        <Form className="sign-in-form">
-          <Form.Group className="form-head d-flex flex-column mb-3" controlId="formBasicEmail">
-            <Form.Text className="fs-2 fw-semibold">
+    <div className="manage-sign-in w-100 d-flex gutters-x">
+
+      <div className="left-wrapper w-100 d-flex justify-content-center align-items-center w-sm-50">
+        <Form
+          className="sign-in-form d-flex flex-column gap-4"
+          style={{ width: "85%", maxWidth: "18.75rem" }}
+          onSubmit={handleSignIn}
+        >
+          <Form.Group className="form-head d-flex flex-column gap-2">
+            <Form.Text className="text-center fs-2 fw-semibold text-dark text-sm-start">
               Sign In
             </Form.Text>
-            <Form.Text className="fw-semibold">
+            <Form.Text className="d-flex justify-content-center gap-2 text-center fw-semibold text-dark justify-content-sm-start">
               New user? <Link to={SignUp.pathname}>Create an account</Link>
             </Form.Text>
           </Form.Group>
 
           <Form.Group className="form-body">
-            <InputGroup className="mb-3" controlId="formBasicEmail">
+            <InputGroup className="mb-3">
               <Form.Control
+                className="border-2 border-dark"
                 type="text"
                 placeholder="Username or Email"
+                value={usernameOrEmail}
+                onChange={event => dispatch(validateUsernameOrEmail(event.target.value))}
               />
             </InputGroup>
 
-            <InputGroup className="mb-3" controlId="formBasicPassword">
+            <InputGroup className="mb-3">
               <Form.Control
+                className="border-2 border-dark"
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={event => dispatch(validatePassword(event.target.value))}
               />
             </InputGroup>
 
-            <InputGroup className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Keep me signed in"/>
+            <InputGroup className="mb-3">
+              <Form.Check
+                className="fw-semibold"
+                type="checkbox"
+                label="Keep me signed in"
+                checked={keepMeSignedIn}
+                onChange={event => dispatch(validateKeepMeSignedIn(event.target.checked))}
+              />
             </InputGroup>
 
             <Button className="w-100 rounded-0 py-2" variant="dark" type="submit">
@@ -60,11 +129,27 @@ export default function ManageSignIn() {
         </Form>
       </div>
 
-      <div className="right-wrapper w-50 d-flex justify-content-center align-items-center">
+      <div className="right-wrapper d-none w-sm-50 d-sm-flex justify-content-sm-center align-items-sm-center">
         <div className="img-cont">
-          <img className="w-100 h-100" src={ConceptImage} alt="concept-image"/>
+          <img className="w-sm-100 h-sm-100" src={ConceptImage} alt="concept-image"/>
         </div>
       </div>
+
+      <ToastContainer position="bottom-start" className="p-3">
+        <Toast
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          bg="danger"
+          delay={3000}
+          autohide
+        >
+          <Toast.Body
+            className="text-white"
+          >
+            {toastMessage}
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 }

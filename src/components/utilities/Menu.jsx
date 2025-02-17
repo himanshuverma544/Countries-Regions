@@ -8,7 +8,7 @@ export default function Menu({ className = "", title = "", children, isOpen = fa
           ${isOpen ? "show" : "hide"}
           ${className}
         `}
-        tabindex="-1"
+        tabIndex="-1"
         id="menu"
         aria-labelledby="menu"
       >

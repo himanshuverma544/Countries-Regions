@@ -1,62 +1,141 @@
+import { useNavigate } from "react-router-dom";
+
 import { Link } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  validateFullName,
+  validateUsernameOrEmail,
+  validatePassword,
+  validateConfirmPassword,
+  signUpUser,
+}
+  from "../../../redux/authSlice";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 
 import Divider from "../../../components/utilities/Divider";
-import { SignUp } from "../../../routes";
+
 import ConceptImage from "../../../assets/concept-image.png";
+
+import { SignIn } from "../../../routes";
 
 
 export default function ManageSignUp() {
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {
+    fullName,
+    usernameOrEmail,
+    password,
+    confirmPassword,
+    fullNameError,
+    usernameError,
+    passwordError,
+    confirmPasswordError,
+  }
+    = useSelector(state => state.auth);
+
+
+  const handleSignUp = event => {
+
+    event.preventDefault();
+
+    dispatch(validateFullName(fullName));
+    dispatch(validateUsernameOrEmail(usernameOrEmail));
+    dispatch(validatePassword(password));
+    dispatch(validateConfirmPassword(confirmPassword));
+  
+    if (!fullNameError && !usernameError && !passwordError && !confirmPasswordError) {
+      dispatch(
+        signUpUser({
+          fullName,
+          usernameOrEmail,
+          password
+        })
+      );
+      navigate(SignIn.pathname);
+    }
+  }
+
+
   return (
-    <div className="manage-sign-up w-100 d-flex">
-      <div className="left-wrapper w-50 d-flex justify-content-center align-items-center">
-        <Form className="sign-in-form">
-          <Form.Group className="form-head d-flex flex-column mb-3" controlId="formBasicEmail">
-            <Form.Text className="fs-2 fw-semibold">
+    <div className="manage-sign-up w-100 d-flex gutters-x">
+      <div className="left-wrapper w-100 d-flex justify-content-center align-items-center w-sm-50">
+        <Form
+          className="sign-in-form d-flex flex-column gap-4"
+          style={{ width: "85%", maxWidth: "18.75rem" }}
+          onSubmit={handleSignUp}
+        >
+          <Form.Group className="form-head d-flex flex-column gap-2">
+            <Form.Text className="text-center fs-2 fw-semibold text-dark text-sm-start">
               Sign Up
             </Form.Text>
-            <Form.Text className="fw-semibold">
-              Already User? <Link to={SignUp.pathname}>Sign In here</Link>
+            <Form.Text className="d-flex justify-content-center gap-2 text-center fw-semibold text-dark justify-content-sm-start">
+              <span>Already User?</span>
+              <Link to={SignIn.pathname}>Sign In here</Link>
             </Form.Text>
           </Form.Group>
 
           <Form.Group className="form-body">
-
-
-            <InputGroup className="mb-3" controlId="formBasicEmail">
+            <InputGroup className="mb-3">
               <Form.Control
+                className="border-2 border-dark"
                 type="text"
                 placeholder="Full Name"
+                value={fullName}
+                onChange={event => dispatch(validateFullName(event.target.value))}
+                isInvalid={!!fullNameError}
               />
-            </InputGroup>
-
-            <InputGroup className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                type="text"
-                placeholder="Username or Email"
-              />
-            </InputGroup>
-
-            <InputGroup className="mb-3" controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-              />
+              <Form.Control.Feedback type="invalid">
+                {fullNameError}
+              </Form.Control.Feedback>
             </InputGroup>
 
             <InputGroup className="mb-3">
               <Form.Control
-                type="password"
-                placeholder="Confirm Your Password"
+                className="border-2 border-dark"
+                type="text"
+                placeholder="Username or Email"
+                value={usernameOrEmail}
+                onChange={event => dispatch(validateUsernameOrEmail(event.target.value))}
+                isInvalid={!!usernameError}
               />
+              <Form.Control.Feedback type="invalid">
+                {usernameError}
+              </Form.Control.Feedback>
             </InputGroup>
 
-            <InputGroup className="mb-3" controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Keep me signed in"/>
+            <InputGroup className="mb-3">
+              <Form.Control
+                className="border-2 border-dark"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={event => dispatch(validatePassword(event.target.value))}
+                isInvalid={!!passwordError}
+              />
+              <Form.Control.Feedback type="invalid">
+                {passwordError}
+              </Form.Control.Feedback>
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <Form.Control
+                className="border-2 border-dark"
+                type="password"
+                placeholder="Confirm Your Password"
+                value={confirmPassword}
+                onChange={event => dispatch(validateConfirmPassword(event.target.value))}
+                isInvalid={!!confirmPasswordError}
+              />
+              <Form.Control.Feedback type="invalid">
+                {confirmPasswordError}
+              </Form.Control.Feedback>
             </InputGroup>
 
             <Button className="w-100 rounded-0 py-2" variant="dark" type="submit">
@@ -76,10 +155,10 @@ export default function ManageSignUp() {
         </Form>
       </div>
 
-      <div className="right-wrapper w-50 d-flex justify-content-center align-items-center">
-          <div className="img-cont">
-            <img className="w-100 h-100" src={ConceptImage} alt="concept-image"/>
-          </div>
+      <div className="right-wrapper d-none w-sm-50 d-sm-flex justify-content-sm-center align-items-sm-center">
+        <div className="img-cont">
+          <img className="w-sm-100 h-sm-100" src={ConceptImage} alt="concept-image"/>
+        </div>
       </div>
     </div>
   );

@@ -38,7 +38,7 @@ export default function Header() {
             className="d-flex justify-content-center align-items-center gap-3 mb-3 text-nowrap text-black-50"
             pathname={SignIn.pathname}
             title={SignIn.title}
-            icon={<i class="fa-regular fa-user"></i>}
+            icon={<i className="fa-regular fa-user"></i>}
           />
           <MenuIcon
             className="d-lg-none mb-3"

@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+
 export const fetchData = createAsyncThunk("data/fetchData", async () => {
   const response = await fetch(import.meta.env.VITE_APP_DATA_API_KEY);
   const data = await response.json();
   return data;
 });
+
 
 const dataSlice = createSlice({
   name: "data",
@@ -13,6 +15,7 @@ const dataSlice = createSlice({
     currentItems: [],
     currentIndex: 0,
     hasMore: true,
+    hasItems: false,
     
     loading: false,
     error: null,
@@ -83,6 +86,7 @@ const dataSlice = createSlice({
 
         state.regions = Object.keys(state.itemsByRegion);
         state.loading = false;
+        state.hasItems = true;
       })
       .addCase(fetchData.rejected, (state, action) => {
         state.loading = false;
