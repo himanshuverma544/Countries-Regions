@@ -22,28 +22,49 @@ export const store = configureStore({
 
 function loadPersistedState() {
 
-  if (isClientSide()) {
-    const persistedState = localStorage.getItem(PERSISTENCE_KEY);
-    return persistedState ? JSON.parse(persistedState) : undefined;
-  }
+  if (!isClientSide()) {
     return undefined;
+  }
+
+  const localPersistedState = localStorage.getItem(PERSISTENCE_KEY);
+  const localState = localPersistedState ? JSON.parse(localPersistedState) : {};
+
+  const sessionPersistedState = sessionStorage.getItem(PERSISTENCE_KEY);
+  const sessionState = sessionPersistedState ? JSON.parse(sessionPersistedState) : {};
+
+  return ({
+    auth: {
+      users: localState.auth?.users || [],
+      signedInUser: sessionState.auth?.signedInUser || localState.auth?.signedInUser || null
+    }
+  });
 }
 
 function savePersistedState(state) {
-  
-  if (isClientSide()) {
 
-    localStorage.setItem(
-      PERSISTENCE_KEY,
-      JSON.stringify({
-        auth: {
-          users: state.auth.users,
-          signedInUser: state.auth.signedInUser
-        }
-      })
-    );
+  if (!isClientSide()) {
+    return;
+  }
+
+  localStorage.setItem(PERSISTENCE_KEY, JSON.stringify({
+    auth: { users: state.auth.users }
+  }));
+
+  if (!state.auth.signedInUser?.keepMeSignedIn) {
+    sessionStorage.setItem(PERSISTENCE_KEY, JSON.stringify({
+      auth: { signedInUser: state.auth.signedInUser }
+    }));
+  }
+  else {
+    localStorage.setItem(PERSISTENCE_KEY, JSON.stringify({
+      auth: {
+        users: state.auth.users,
+        signedInUser: state.auth.signedInUser
+      }
+    }));
   }
 }
+
 
 if (isClientSide()) {
 

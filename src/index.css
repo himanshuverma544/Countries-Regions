@@ -12,7 +12,8 @@
 #root {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 100dvh
+  min-height: 100dvh;
+  padding: 1rem 0;
 }
 
 ul {

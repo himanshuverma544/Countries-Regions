@@ -1,27 +1,20 @@
-import Dropdown from 'react-bootstrap/Dropdown';
-
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
-
-import { useDispatch, useSelector } from "react-redux";
-import { signOutUser } from "../../redux/authSlice";
 
 import NavItem from "../../components/utilities/NavItem";
 import RegionNavItems from "../../components/global/RegionNavItems";
 
 import Menu from "../../components/utilities/Menu";
 import MenuIcon from "../../components/utilities/MenuIcon";
+import AuthNavItem from "../../components/global/AuthNavItem";
 
-import { Home, Region, SignIn } from "../../routes";
+import { Home, Region, SignUp } from "../../routes";
 
 
 export default function Header() {
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const dispatch = useDispatch();
-  const signedInUser = useSelector(state => state.auth.signedInUser);
 
   return (
     <header className="d-flex flex-wrap justify-content-between gutters">
@@ -42,29 +35,12 @@ export default function Header() {
             className="d-none d-lg-flex flex-lg-wrap gap-lg-5"
             navItemClassName="text-black-50"
           />
-          {signedInUser ? (
-            <Dropdown>
-              <Dropdown.Toggle
-                id="dropdown-signedInUser"
-                className="text-capitalize"
-                variant="success"
-              >
-                {signedInUser.firstName}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => dispatch(signOutUser())}>
-                  Sign Out
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          ) : (
-            <NavItem
-              className="d-flex justify-content-center align-items-center gap-3 mb-3 text-nowrap text-black-50"
-              pathname={SignIn.pathname}
-              title={SignIn.title}
-              icon={<i className="fa-regular fa-user"></i>}
-            />
-          )}
+          <AuthNavItem
+            navItemClassName="d-flex justify-content-center align-items-center gap-3 mb-3 text-nowrap text-black-50"
+            routes = {{
+              signUp: SignUp
+            }}
+          />
           <MenuIcon
             className="d-lg-none mb-3"
             innerClassName="bg-dark"
