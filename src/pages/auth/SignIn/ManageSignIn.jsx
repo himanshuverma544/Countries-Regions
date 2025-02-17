@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
-import { store } from "../../../redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { validateUsernameOrEmail, validatePassword, validateKeepMeSignedIn, signInUser } from "../../../redux/authSlice";
+import { validateUsernameOrEmail, validatePassword, validateKeepMeSignedIn } from "../../../redux/authSlice";
+import { signInUser } from "../../../redux/authSlice";
 
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -25,43 +25,49 @@ export default function ManageSignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toast, setToast] = useState({ message: "", bg: "", delay: 3000, autohide: true, show: false });
 
   const {
     usernameOrEmail,
     password,
-    signInError,
-    keepMeSignedIn
+    keepMeSignedIn,
+    signedInUser
   }
     = useSelector(state => state.auth);
 
 
-  const handleSignIn = event => {
+  const handleSignIn = async event => {
 
     event.preventDefault();
 
-    dispatch(
-      signInUser({
-        usernameOrEmail,
-        password,
-        keepMeSignedIn
-      })
-    );
-
-    
-
-    if (signInError) {
-      console.log(signInError);
+    try {
+      await dispatch(
+        signInUser({
+          usernameOrEmail,
+          password,
+          keepMeSignedIn
+        })
+      ).unwrap();
+      navigate(Home.pathname);
     }
-    else {
-      console.log("Success");
+    catch (error) {
+      setToast({
+        ...toast,
+        message: error,
+        bg: "danger",
+        show: true
+      });
     }
-
-
-   
   }
+
+  
+  useEffect(() => {
     
+    if (signedInUser) {
+      navigate(Home.pathname);
+    }
+  }, [signedInUser, navigate]);
+
 
   return (
     <div className="manage-sign-in w-100 d-flex gutters-x">
@@ -137,16 +143,16 @@ export default function ManageSignIn() {
 
       <ToastContainer position="bottom-start" className="p-3">
         <Toast
-          show={showToast}
-          onClose={() => setShowToast(false)}
-          bg="danger"
-          delay={3000}
-          autohide
+          show={toast.show}
+          onClose={() => setToast({ ...toast, show: false })}
+          bg={toast.bg}
+          delay={toast.delay}
+          autohide={toast.autohide}
         >
           <Toast.Body
             className="text-white"
           >
-            {toastMessage}
+            {toast.message}
           </Toast.Body>
         </Toast>
       </ToastContainer>

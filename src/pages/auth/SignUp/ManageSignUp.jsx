@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
+import { useEffect } from "react";
+
 import { Link } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +35,9 @@ export default function ManageSignUp() {
     usernameOrEmail,
     password,
     confirmPassword,
+
+    signedInUser,
+
     fullNameError,
     usernameError,
     passwordError,
@@ -62,6 +67,13 @@ export default function ManageSignUp() {
     }
   }
 
+  useEffect(() => {
+
+    if (signedInUser) {
+      navigate(Home.pathname);
+    }
+  }, [signedInUser, navigate]);
+
 
   return (
     <div className="manage-sign-up w-100 d-flex gutters-x">
@@ -84,7 +96,7 @@ export default function ManageSignUp() {
           <Form.Group className="form-body">
             <InputGroup className="mb-3">
               <Form.Control
-                className="border-2 border-dark"
+                className="border-2 text-capitalize border-dark"
                 type="text"
                 placeholder="Full Name"
                 value={fullName}

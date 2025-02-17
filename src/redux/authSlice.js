@@ -1,4 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+
+const signInUser = createAsyncThunk(
+  "auth/signInUser",
+  async ({ usernameOrEmail, password, keepMeSignedIn }, { getState, rejectWithValue }) => {
+
+    const { users } = getState().auth;
+
+    const user = users.find(user =>
+      user.usernameOrEmail === usernameOrEmail && user.password === password
+    );
+
+    if (user) {
+      return ({ ...user, keepMeSignedIn });
+    }
+    else {
+      return rejectWithValue("Invalid username/email or password.");
+    }
+  }
+);
 
 
 const initialState = {
@@ -10,12 +31,7 @@ const initialState = {
   confirmPassword: "",
   keepMeSignedIn: false,
 
-  signedInUser: {
-    firstName: "",
-    lastName: "",
-    usernameOrEmail: "",
-    keepMeSignedIn: false
-  },
+  signedInUser: null,
 
   fullNameError: "",
   usernameError: "",
@@ -65,6 +81,12 @@ const authSlice = createSlice({
         state.usernameError = value.length < 5 || value.includes(' ')
           ? "Username must be at least 5 characters with no spaces."
           : "";
+      }
+
+      const userExists = state.users.find(user => user.usernameOrEmail);
+
+      if (userExists) {
+        state.usernameError = "User already exists.";
       }
     },
 
@@ -123,22 +145,34 @@ const authSlice = createSlice({
       });
     },
 
-    signInUser: (state, action) => {
+    signOutUser: state => {
 
-      const { usernameOrEmail, password, keepMeSignedIn } = action.payload;
-
-      const user = state.users.find(user =>
-        user.usernameOrEmail === usernameOrEmail && user.password === password
-      );
-
-      if (user) {
-        state.signedInUser = { keepMeSignedIn, ...user };
-        state.signInError = "";
-      }
-      else {
-        state.signInError = "Invalid username/email or password.";
-      }
+      Object.assign(state, {
+        fullName: "",
+        usernameOrEmail: "",
+        password: "",
+        confirmPassword: "",
+        keepMeSignedIn: false,
+      
+        signedInUser: null,
+      
+        fullNameError: "",
+        usernameError: "",
+        passwordError: "",
+        confirmPasswordError: "",
+        signInError: "",
+      });
     }
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(signInUser.fulfilled, (state, action) => {
+        state.signedInUser = action.payload;
+        state.signInError = "";
+      })
+      .addCase(signInUser.rejected, (state, action) => {
+        state.signInError = action.payload;
+      });
   }
 });
 
@@ -150,8 +184,10 @@ export const {
   validateConfirmPassword,
   validateKeepMeSignedIn,
   signUpUser,
-  signInUser
+  signOutUser
 }
   = authSlice.actions;
- 
+
+export { signInUser };
+  
 export default authSlice.reducer;
