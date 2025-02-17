@@ -22,7 +22,7 @@ import Divider from "../../../components/utilities/Divider";
 
 import ConceptImage from "../../../assets/concept-image.png";
 
-import { SignIn } from "../../../routes";
+import { Home, SignIn } from "../../../routes";
 
 
 export default function ManageSignUp() {
