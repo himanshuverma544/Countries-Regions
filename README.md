@@ -1,7 +1,7 @@
-* Tech Stack
-- React JS
-- React Bootstrap
-- Bootstrap
+# Tech Stack
+  - React JS
+  - React Bootstrap
+  - Bootstrap
 
 * Features
   -
