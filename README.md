@@ -1,7 +1,15 @@
 # Tech Stack
   - React JS
+  - Redux Toolkit
   - React Bootstrap
   - Bootstrap
 
-* Features
-  -
+# Features
+  - Fetching Data from the API
+  - Carousel
+  - List View
+  - Pagination
+  - User Authentication
+
+# Design
+  - [https://www.figma.com/design/tlDhpxrsaByrWlURwcSSLZ/Machine-Test](Mockup)
