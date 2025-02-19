@@ -13,3 +13,6 @@
 
 # Design
   - [Mockup](https://www.figma.com/design/tlDhpxrsaByrWlURwcSSLZ/Machine-Test)
+
+# Deployment
+  - Vercel
