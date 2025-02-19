@@ -27,7 +27,7 @@ export default function Menu({ className = "", title = "", children, isOpen = fa
           >
           </button>
         </div>
-        <div className="offcanvas-body">
+        <div className="offcanvas-body" onClick={onClickClose}>
           {children}
         </div>
       </div>

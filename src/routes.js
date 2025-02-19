@@ -26,5 +26,5 @@ export const SignUp = {
 
 export const NotFound = {
   title: "Not Found",
-  pathname: "/not-found"
+  pathname: "/*"
 };
