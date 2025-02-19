@@ -12,4 +12,4 @@
   - User Authentication
 
 # Design
-  - [https://www.figma.com/design/tlDhpxrsaByrWlURwcSSLZ/Machine-Test](Mockup)
+  - (Mockup)[https://www.figma.com/design/tlDhpxrsaByrWlURwcSSLZ/Machine-Test]
