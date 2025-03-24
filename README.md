@@ -16,3 +16,6 @@
 
 # Deployment
   - Vercel
+
+# Given By
+  - [Times Now](https://www.timesnownews.com/)
