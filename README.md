@@ -15,7 +15,7 @@
   - [Mockup](https://www.figma.com/design/tlDhpxrsaByrWlURwcSSLZ/Machine-Test)
 
 # Deployment
-  - Vercel
+  - [Vercel](https://www.vercel.com)
 
 # Given By
   - [Times Now](https://www.timesnownews.com/)
