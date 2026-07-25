@@ -39,9 +39,9 @@ export default function CountriesCarousel({ className = "", items = [], loading 
         >
           {items.map((item, index) =>
             <Carousel.Item key={index} className="img-cont">
-              <div className="img-cont" style={{ width: "100%", height: "25rem" }}>
+              <div className="img-cont" style={{ width: "100%", height: "35rem" }}>
                 <img
-                  className={`flag-image-${index + 1} w-100 h-100 object-fit-cover`}
+                  className={`flag-image-${index + 1} w-100 h-100 object-fit-fill`}
                   src={item?.flag || ""}
                   alt={item?.name || ""}
                 />
